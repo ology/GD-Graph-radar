@@ -31,7 +31,11 @@ use constant ANGLE_OFFSET => 90;
 
 =head1 DESCRIPTION
 
-This module is based on L<GD::Graph::pie> but draws a radar chart instead.
+This module is based on L<GD::Graph::pie> but B<attempts> to draw a radar chart
+instead.  Apparently the code only allows you to draw at most nine unlabeled
+concentric scale circles. Ugh!
+
+Check out the L<Radar> module instead.
 
 =head1 METHODS
 
@@ -339,9 +343,9 @@ L<GD::Graph>
 
 C<GD::Graph::pie> for an example of a similar plotting API.
 
-L<Imager::Chart::Radial>
+L<Radial>
 
-L<Google::Chart::Type::Radar>
+L<Google::Chart::Type::Radar> - Broken
 
 =head1 ORIGINAL AUTHOR
 
