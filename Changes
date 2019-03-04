@@ -1,6 +1,8 @@
 Revision history for GD::Graph::radar
 
 {{$NEXT}}
+    - Clean up code, POD and distribution files.
+    - Indicate in the description that this is only a *feeble attempt* rather than a worthy module.
 
 0.1101
     - Whoops! Left-in t/test.png which defeats the purpose of the existence tests.
