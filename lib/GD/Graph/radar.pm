@@ -1,6 +1,6 @@
 package GD::Graph::radar;
 
-# ABSTRACT: Atttempt to make radial charts
+# ABSTRACT: Attempt to make radial charts
 
 use strict;
 use warnings;
