@@ -212,7 +212,7 @@ sub _draw_data {
     my $ac = $self->{acci};  # Accent colour
     my $pb = $self->{start_angle};
 
-    my $poly = new GD::Polygon;
+    my $poly = GD::Polygon->new;
     my @vertices = ();
 
     for (my $i = 0; $i < @values; $i++) {
