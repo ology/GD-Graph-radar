@@ -339,6 +339,10 @@ L<GD::Graph>
 
 C<GD::Graph::pie> for an example of a similar plotting API.
 
+L<Imager::Chart::Radial>
+
+L<Google::Chart::Type::Radar>
+
 =head1 ORIGINAL AUTHOR
 
 Copyright 2003 by Brad J. Murray
