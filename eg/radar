@@ -5,6 +5,7 @@ use warnings;
 use GD::Graph::radar;
 
 my $radar = GD::Graph::radar->new(400, 400);
+#$radar->{nmarkers} = 9;
 
 my $image = $radar->plot([
     [qw( a    b  c    d    e    f    g  h    i )],
