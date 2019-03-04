@@ -37,7 +37,7 @@ This module is based on L<GD::Graph::pie> but draws a radar chart instead.
 
 =head2 new()
 
-  $radar = GD::Graph::radar->new();
+  $radar = GD::Graph::radar->new($height, $width);
 
 Create a new C<GD::Graph::radar> object.
 
