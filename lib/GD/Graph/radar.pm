@@ -343,7 +343,7 @@ L<GD::Graph>
 
 C<GD::Graph::pie> for an example of a similar plotting API.
 
-L<Radial>
+L<Radial> - Acceptable
 
 L<Google::Chart::Type::Radar> - Broken
 
