@@ -1,6 +1,10 @@
 Revision history for GD::Graph::radar
 
 {{$NEXT}}
+    - Ugh! Fixed crucial typo.
+    - Re-worded ABSTRACT.
+
+0.1102 2019-03-03 21:06:36
     - Clean up code, POD and distribution files.
     - Indicate in the description that this is only a *feeble attempt* rather than a worthy module.
 
