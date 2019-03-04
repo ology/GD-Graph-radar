@@ -1,10 +1,12 @@
 package GD::Graph::radar;
+
 # ABSTRACT: Make radial bar charts
 
 use strict;
 use warnings;
 
-our $VERSION = '0.1101';
+our $VERSION = '0.1200';
+
 use base qw(GD::Graph);
 use GD;
 use GD::Graph::colour qw(:colours :lists);
@@ -14,31 +16,28 @@ use GD::Text::Align;
 use constant PI => 4 * atan2(1, 1);
 use constant ANGLE_OFFSET => 90;
 
-=head1 NAME
-
-GD::Graph::radar - Make radial bar charts
-
 =head1 SYNOPSIS
 
   use GD::Graph::radar;
+
   my $radar = GD::Graph::radar->new(400, 400);
+
   my $image = $radar->plot([
       [qw( a    b  c    d    e    f    g  h    i )],
       [qw( 3.2  9  4.4  3.9  4.1  4.3  7  6.1  5 )]
   ]);
-  print $image->png;  #or ->gif, or ->jpeg, or...
+
+  print $image->png;  # or ->gif or ->jpeg or ...
 
 =head1 DESCRIPTION
 
-This module is based on C<GD::Graph::pie> with the exception of 
-changes to the default settings, the C<draw_data> method, and 
-elimination of the pie specific code.
+This module is based on L<GD::Graph::pie> but draws a radar chart instead.
 
-=head1 PUBLIC METHODS
+=head1 METHODS
 
 =head2 new()
 
-  $img = GD::Graph::radar->new();
+  $radar = GD::Graph::radar->new();
 
 Create a new C<GD::Graph::radar> object.
 
@@ -76,6 +75,8 @@ sub _has_default {
 
 =head2 plot()
 
+  $image = $radar->plot(\@data);
+
 Create the image.
 
 =cut
@@ -86,19 +87,17 @@ sub plot {
 
     $self->check_data($data) or return;
     $self->init_graph()      or return;
-    $self->setup_text()      or return;
-    $self->setup_coords()    or return;
-    $self->draw_text()       or return;
-    $self->draw_data()       or return;
+    $self->_setup_text()     or return;
+    $self->_setup_coords()   or return;
+    $self->_draw_text()      or return;
+    $self->_draw_data()      or return;
 
     return $self->{graph};
 }
 
-=head1 PRIVATE METHODS
-
 =head2 initialise()
 
-Setup defaults.
+Setup the plot.
 
 =cut
 
@@ -111,42 +110,23 @@ sub initialise {
         $self->{$key} = $val;
     }
 
-    $self->set_value_font(gdTinyFont);
-    $self->set_label_font(gdSmallFont);
+    $self->_set_value_font(gdTinyFont);
+    $self->_set_label_font(gdSmallFont);
 }
 
-=head2 set_label_font()
-
-Set the font-name of the label.
-
-=cut
-
-sub set_label_font {
+sub _set_label_font {
     my $self = shift;
     $self->_set_font('gdta_label', @_) or return;
     $self->{gdta_label}->set_align('bottom', 'center');
 }
 
-=head2 set_value_font()
-
-Set the font-name of the value.
-
-=cut
-
-sub set_value_font {
+sub _set_value_font {
     my $self = shift;
     $self->_set_font('gdta_value', @_) or return;
     $self->{gdta_value}->set_align('center', 'center');
 }
 
-=head2 setup_coords()
-
-Setup the coordinate system and colours.  Calculate the relative axis
-coordinates with respect to the canvas size.
-
-=cut
-
-sub setup_coords() {
+sub _setup_coords() {
     # Inherit defaults() from GD::Graph
     # Inherit checkdata from GD::Graph
     my $self = shift;
@@ -181,13 +161,7 @@ sub setup_coords() {
     return $self;
 }
 
-=head2 setup_text()
-
-Setup the parameters for the text elements.
-
-=cut
-
-sub setup_text {
+sub _setup_text {
     # Inherit open_graph from GD::Graph
     my $self = shift;
 
@@ -207,13 +181,7 @@ sub setup_text {
     return $self;
 }
 
-=head2 draw_text()
-
-Put the text on the canvas.
-
-=cut
-
-sub draw_text {
+sub _draw_text {
     my $self = shift;
 
     $self->{gdta_title}->draw($self->{xc}, $self->{t_margin}) 
@@ -224,13 +192,7 @@ sub draw_text {
     return $self;
 }
 
-=head2 draw_data()
-
-Draw the data lines and the polygon.
-
-=cut
-
-sub draw_data {
+sub _draw_data {
     my $self = shift;
 
     my $max_val = 0;
@@ -274,7 +236,7 @@ sub draw_data {
 
         $radius = 0 if $radius < 0 && $self->{absolute};
 
-        my ($xe, $ye) = cartesian(
+        my ($xe, $ye) = _cartesian(
             $radius,
             $pa, 
             $self->{xc}, $self->{yc},
@@ -337,25 +299,19 @@ sub draw_data {
 
         next if $self->{suppress_angle} && $slice_angle <= $self->{suppress_angle};
 
-        my ($xe, $ye) = cartesian(
+        my ($xe, $ye) = _cartesian(
               3 * $self->{w} / 8, $pa,
               $self->{xc}, $self->{yc},
               $self->{h} / $self->{w}
         );
 
-        $self->put_slice_label($xe, $ye, $self->{_data}->get_x($i));
+        $self->_put_slice_label($xe, $ye, $self->{_data}->get_x($i));
     }
        
     return $self;
 }
 
-=head2 put_slice_label()
-
-Put the slice label on the pie.
-
-=cut
-
-sub put_slice_label {
+sub _put_slice_label {
     my $self = shift;
     my ($x, $y, $label) = @_;
 
@@ -365,14 +321,7 @@ sub put_slice_label {
     $self->{gdta_value}->draw($x, $y);
 }
 
-=head2 cartesian()
-
-Return x, y coordinates, radius, angle, center x and y, and a scaling
-factor (height/width).
-
-=cut
-
-sub cartesian {
+sub _cartesian {
     # $ANGLE_OFFSET is used to define where 0 is meant to be
     my ($r, $phi, $xi, $yi, $cr) = @_; 
     return (
@@ -386,25 +335,12 @@ __END__
 
 =head1 SEE ALSO
 
-* The code in the C<eg/> and C<t/> directories.
-
 L<GD::Graph>
 
 C<GD::Graph::pie> for an example of a similar plotting API.
 
-=head1 AUTHOR
-
-Original code by Brad J. Murray E<lt>bjm@phreeow.netE<gt>
-
-Maintenance by Gene Boggs E<lt>gene@cpan.orgE<gt>
-
-=head1 COPYRIGHT AND LICENSE
+=head1 ORIGINAL AUTHOR
 
 Copyright 2003 by Brad J. Murray
-
-Copyright 2012 by Gene Boggs
-
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself. 
 
 =cut
