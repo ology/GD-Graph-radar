@@ -1,11 +1,11 @@
 package GD::Graph::radar;
 
-# ABSTRACT: Make radial bar charts
+# ABSTRACT: Atttempt to make radial charts
 
 use strict;
 use warnings;
 
-our $VERSION = '0.1102';
+our $VERSION = '0.1103';
 
 use base qw(GD::Graph);
 use GD;
@@ -35,7 +35,7 @@ This module is based on L<GD::Graph::pie> but B<attempts> to draw a radar chart
 instead.  Apparently the code only allows you to draw at most nine unlabeled
 concentric scale circles. Ugh!
 
-Check out the L<Radar> module instead.
+Check out the L<Radial> module instead.
 
 =head1 METHODS
 
