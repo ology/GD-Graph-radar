@@ -5,7 +5,7 @@ package GD::Graph::radar;
 use strict;
 use warnings;
 
-our $VERSION = '0.1103';
+our $VERSION = '0.1104';
 
 use base qw(GD::Graph);
 use GD;
