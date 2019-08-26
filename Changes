@@ -1,6 +1,7 @@
 Revision history for GD::Graph::radar
 
 {{$NEXT}}
+    - DEPRECATED
 
 0.1104 2019-03-16 03:13:23
     - Attempt to quiet the cpantesters failure by tweaking the test.
