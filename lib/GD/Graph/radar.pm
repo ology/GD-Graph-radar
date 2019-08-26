@@ -1,6 +1,6 @@
 package GD::Graph::radar;
 
-# ABSTRACT: DEPRECATED Attempt to make radial charts
+# ABSTRACT: (DEPRECATED) Attempt to make radial charts
 
 use strict;
 use warnings;
