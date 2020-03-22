@@ -1,6 +1,8 @@
 Revision history for GD::Graph::radar
 
 {{$NEXT}}
+
+0.1105_2 2019-08-26 06:26:03
     - Fix the distribution deprecation.
 
 0.1105_1 2019-08-25 22:19:44
